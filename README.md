@@ -9,6 +9,22 @@ HabitRPG-CLI integrates with [Growl for Windows][3] to send a notification upon 
 [2]: http://www.autoitscript.com/site/ (AutoIT)
 [3]: http://www.growlforwindows.com/ (Growl for Windows)
 
+Installation
+------------
+* Grab the ZIP file for the latest release from [here][i1].
+* Unzip the file where ever you want (I recommend somewhere you can find it again)
+* Follow the configuration instructions below!
+
+[i1]: https://github.com/snicker/HabitRPG-CLI/releases/tag/0.1.1.0 (Latest release)
+
+### Configuration
+
+You will need to edit the "habitrpg.ini" file in the same folder as HabitRPG-CLI to add your User ID and API Key for HabitRPG. This can be found in the settings area of your account on the [HabitRPG][1] site.
+
+	[HabitRPGSettings]
+	UID=<your user id goes here>
+	APIKey=<your api key goes here>
+
 Usage
 -----
 HabitRPG-CLI accepts 3 parameters, 2 required and 1 optional:
@@ -30,14 +46,6 @@ To give yourself a bonus for the "Productivity" habit and send a custom message:
 If you're indulging your bad browsing habits:
 
 `habitrpg Browsing down`
-
-Configuration
--------------
-You will need to edit the "habitrpg.ini" file in the same folder as HabitRPG-CLI to add your User ID and API Key for HabitRPG. This can be found in the settings area of your account on the [HabitRPG][1] site.
-
-	[HabitRPGSettings]
-	UID=<your user id goes here>
-	APIKey=<your api key goes here>
 	
 Why?
 ----
