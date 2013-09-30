@@ -2,7 +2,7 @@
 #AutoIt3Wrapper_Icon=res\icon-128.ico
 #AutoIt3Wrapper_Outfile=release\habitrpg.exe
 #AutoIt3Wrapper_Res_Description=HabitRPG-CLI
-#AutoIt3Wrapper_Res_Fileversion=0.1.0.0
+#AutoIt3Wrapper_Res_Fileversion=0.1.1.0
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
 #AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
 #AutoIt3Wrapper_Run_After=md "%scriptdir%\release\%fileversion%"
@@ -12,7 +12,7 @@
 #AutoIt3Wrapper_Run_After=xcopy "%scriptdir%\res\*" "%scriptdir%\release\%fileversion%\res\" /Y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 ;HabitRPG-CLI
-;Version 0.1 by snicker (ngordon779@gmail.com)
+;Version 0.1.1 by snicker (ngordon779@gmail.com)
 ;https://github.com/snicker/HabitRPG-CLI
 #include ".\libs\winhttp\WinHttp.au3"
 #include ".\libs\growl\_Growl.au3"
@@ -21,8 +21,8 @@
 
 Opt("MustDeclareVars", 1)
 
-Dim $habitRpgUID = IniRead(".\habitrpg.ini","HabitRPGSettings","UID",-1)
-Dim $habitAPIToken = IniRead(".\habitrpg.ini","HabitRPGSettings","APIKey",-1)
+Dim $habitRpgUID = IniRead(@ScriptDir & "\habitrpg.ini","HabitRPGSettings","UID",-1)
+Dim $habitAPIToken = IniRead(@ScriptDir & "\habitrpg.ini","HabitRPGSettings","APIKey",-1)
 
 If $habitRpgUID == -1 OR $habitAPIToken == -1 Then
 	MsgBox(0,"Config Missing","Please make sure habitrpg.ini is in the current directory and has your UID and API Key.")
