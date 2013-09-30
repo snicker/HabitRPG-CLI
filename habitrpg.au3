@@ -1,10 +1,18 @@
+#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_Icon=res\icon-128.ico
+#AutoIt3Wrapper_Outfile=release\habitrpg.exe
+#AutoIt3Wrapper_Res_Description=HabitRPG-CLI
+#AutoIt3Wrapper_Res_Fileversion=0.1.0.0
+#AutoIt3Wrapper_Res_Fileversion_AutoIncrement=p
+#AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
+#AutoIt3Wrapper_Run_After=md "%scriptdir%\release\%fileversion%"
+#AutoIt3Wrapper_Run_After=move /Y "%out%" "%scriptdir%\release\%fileversion%\"
+#AutoIt3Wrapper_Run_After=copy "%scriptdir%\habitrpg.ini" "%scriptdir%\release\%fileversion%\" /Y
+#AutoIt3Wrapper_Run_After=xcopy "%scriptdir%\res\*" "%scriptdir%\release\%fileversion%\res\" /Y
+#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 ;HabitRPG-CLI
 ;Version 0.1 by snicker (ngordon779@gmail.com)
 ;https://github.com/snicker/HabitRPG-CLI
-#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
-#AutoIt3Wrapper_Icon=res\icon-128.ico
-#AutoIt3Wrapper_Res_requestedExecutionLevel=asInvoker
-#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 #include ".\libs\winhttp\WinHttp.au3"
 #include ".\libs\growl\_Growl.au3"
 #include ".\libs\json\JSON.au3"
