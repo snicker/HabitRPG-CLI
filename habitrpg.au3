@@ -8,6 +8,7 @@
 #AutoIt3Wrapper_Run_After=md "%scriptdir%\release\%fileversion%"
 #AutoIt3Wrapper_Run_After=move /Y "%out%" "%scriptdir%\release\%fileversion%\"
 #AutoIt3Wrapper_Run_After=copy "%scriptdir%\habitrpg.ini" "%scriptdir%\release\%fileversion%\" /Y
+#AutoIt3Wrapper_Run_After=copy "%scriptdir%\README.md" "%scriptdir%\release\%fileversion%\" /Y
 #AutoIt3Wrapper_Run_After=xcopy "%scriptdir%\res\*" "%scriptdir%\release\%fileversion%\res\" /Y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 ;HabitRPG-CLI
