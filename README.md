@@ -99,3 +99,7 @@ This application uses several libraries written by others for AutoIT:
 [7]: https://code.google.com/p/autoit-winhttp/ (WinHTTP wrapper for AutoIt)
 [8]: http://markus.mohnen.net/ (Markus Mohnen)
 [9]: http://gmailgrowl.blogspot.com/ (Gmail Growl)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/snicker/habitrpg-cli/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
