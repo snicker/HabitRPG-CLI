@@ -12,7 +12,7 @@
 #AutoIt3Wrapper_Run_After=xcopy "%scriptdir%\res\*" "%scriptdir%\release\%fileversion%\res\" /Y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 ;HabitRPG-CLI
-;Version 0.1.1 by snicker (ngordon779@gmail.com)
+;Version 0.2.0 by snicker (ngordon779@gmail.com)
 ;https://github.com/snicker/HabitRPG-CLI
 #include ".\libs\winhttp\WinHttp.au3"
 #include ".\libs\growl\_Growl.au3"
@@ -55,32 +55,56 @@ EndIf
 
 Global $growlHandle = _GrowlRegister($growlAppName,$growlNotifications,@ScriptDir & "\res\icon-128.png")
 
-Global $hOpen = _WinHttpOpen("Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.6) Gecko/20100625 Firefox/3.6.6")
-Global $hConnect = _WinHttpConnect($hOpen, "habitrpg.com",  $INTERNET_DEFAULT_HTTPS_PORT)
-Global $hRequest = _WinHttpOpenRequest($hConnect, "POST", "api/v1/user/task/" & $habitRPGTask & "/" & $habitRpgDirection,-1, -1, -1, $WINHTTP_FLAG_SECURE)
-_WinHttpAddRequestHeaders($hRequest, "x-api-user: " & $habitRpgUID)
-_WinHttpAddRequestHeaders($hRequest, "x-api-key: " & $habitAPIToken)
-_WinHttpSendRequest($hRequest,Default,$habitAPIToken);
-_WinHttpReceiveResponse($hRequest)
+Dim $gold_gained = 0, $xp_gained = 0, $original_gold = -1, $original_xp = -1;
 
-Global $sReturned
-If _WinHttpQueryDataAvailable($hRequest) Then
-    Do
-        $sReturned &= _WinHttpReadData($hRequest)
-    Until @error
-		
-	Dim $UnJSONdResponse = _JSONDecode($sReturned)
+Dim $userdata = HRPG_Get_Member($habitRpgUID,$habitRpgUID,$habitAPIToken)[2][1]
+If $userdata <> "" Then
+	$original_gold = $userdata[4][1];
+	$original_xp = $userdata[3][1];
+EndIf
+
+Dim $response = HRPG_Score_Task($habitRPGTask,$habitRpgDirection,$habitRpgUID,$habitAPIToken)
+
+If $response  <> "" Then
 	If $habitRpgReason <> "" Then
 		$habitRpgReason = $habitRpgReason & @LF & @LF
 	EndIf
-	If UBound($UnJSONdResponse) > 3 Then
-		$habitRpgReason = $habitRpgReason & "XP: " & StringFormat("%.2f",$UnJSONdResponse[2][1]) & @LF & "GP: " & StringFormat("%.2f",$UnJSONdResponse[3][1])
+	$gold_gained = $response[12][1] - $original_gold
+	$xp_gained = $response[13][1] - $original_xp
+	If $original_gold > -1 Then
+		$habitRpgReason = $habitRpgReason & "XP: " & StringFormat("%.2f",$xp_gained) & @LF & "GP: " & StringFormat("%.2f",$gold_gained)
 	EndIf
 	_GrowlNotify($growlHandle,$notificationType,$habitRpgTask & " " & $habitRpgNounType & "!",$habitRpgReason)
 Else
 	_GrowlNotify($growlHandle,"notice","Error!","Couldn't communicate with the HabitRPG server")
 EndIf
 
-_WinHttpCloseHandle($hRequest)
-_WinHttpCloseHandle($hConnect)
-_WinHttpCloseHandle($hOpen)
+Func HRPG_Get_Member($MemberUID, $UID, $Key)
+	return HRPG_API_Call("GET","members/" & $MemberUID,$UID,$Key)
+EndFunc
+
+Func HRPG_Score_Task($Task,$Direction,$UID,$Key)
+	return HRPG_API_Call("POST","user/tasks/" & $Task & "/" & $Direction,$UID,$Key)
+EndFunc
+
+Func HRPG_API_Call($Method,$Route,$UID,$Key)
+	Global $hOpen = _WinHttpOpen("Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.6) Gecko/20100625 Firefox/3.6.6")
+	Global $hConnect = _WinHttpConnect($hOpen, "habitrpg.com",  $INTERNET_DEFAULT_HTTPS_PORT)
+	Global $hRequest = _WinHttpOpenRequest($hConnect, $Method, "api/v2/" & $Route,-1, -1, -1, $WINHTTP_FLAG_SECURE)
+	_WinHttpAddRequestHeaders($hRequest, "x-api-user: " & $UID)
+	_WinHttpAddRequestHeaders($hRequest, "x-api-key: " & $Key)
+	_WinHttpSendRequest($hRequest,Default,$Key);
+	_WinHttpReceiveResponse($hRequest)
+	Dim $sReturned = ""
+	Dim $UnJSONdResponse = ""
+	If _WinHttpQueryDataAvailable($hRequest) Then
+		Do
+			$sReturned &= _WinHttpReadData($hRequest)
+		Until @error
+		$UnJSONdResponse = _JSONDecode($sReturned)
+	EndIf
+	_WinHttpCloseHandle($hRequest)
+	_WinHttpCloseHandle($hConnect)
+	_WinHttpCloseHandle($hOpen)
+	return $UnJSONdResponse
+EndFunc
