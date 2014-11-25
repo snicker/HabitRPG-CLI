@@ -57,10 +57,14 @@ Global $growlHandle = _GrowlRegister($growlAppName,$growlNotifications,@ScriptDi
 
 Dim $gold_gained = 0, $xp_gained = 0, $original_gold = -1, $original_xp = -1;
 
-Dim $userdata = HRPG_Get_Member($habitRpgUID,$habitRpgUID,$habitAPIToken)[2][1]
+Dim $userdata = HRPG_Get_Member($habitRpgUID,$habitRpgUID,$habitAPIToken)[3][1]
 If $userdata <> "" Then
-	$original_gold = $userdata[4][1];
-	$original_xp = $userdata[3][1];
+	If UBound($userdata) > 4 Then
+		$original_gold = $userdata[4][1];
+		$original_xp = $userdata[3][1];
+	Else
+		_GrowlNotify($growlHandle,"notice","Error!","Couldn't get your current gold and XP. If this persists, file a bug report!")
+	EndIf
 EndIf
 
 Dim $response = HRPG_Score_Task($habitRPGTask,$habitRpgDirection,$habitRpgUID,$habitAPIToken)
